@@ -1,3 +1,11 @@
+# Minier QR
+
+A gutted version of (Estee Tey's)[https://github.com/lyqht] brilliant (mini-qr)[https://github.com/lyqht/mini-qr]. Adapting for a future project but wanted to share the baseline I will be starting with in case it helps anyone.
+
+This is **definitely** more buggy than the source repo: I would recommend starting there instead.
+
+Below is the unmodified readme from the original.
+
 # Mini QR
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
