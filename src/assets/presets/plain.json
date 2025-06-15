@@ -2,8 +2,8 @@
   "props": {
     "data": "https://www.myspeciallink.com",
     "image": "",
-    "width": 200,
-    "height": 200,
+    "width": 600,
+    "height": 600,
     "margin": 0,
     "dotsOptions": {
       "color": "#000000",
@@ -21,11 +21,11 @@
       "margin": 0
     },
     "qrOptions": {
-      "errorCorrectionLevel": "Q"
+      "errorCorrectionLevel": "M"
     }
   },
   "style": {
-    "borderRadius": "24px",
-    "background": "#ffffff"
+    "borderRadius": "0px",
+    "background": "transparent"
   }
 }

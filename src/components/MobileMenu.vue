@@ -164,7 +164,7 @@ onUnmounted(() => {
       <div class="flex flex-col gap-4">
         <!-- App title -->
         <div class="flex items-center">
-          <h1 class="text-xl text-gray-700 dark:text-gray-100">MiniQR</h1>
+          <h1 class="text-xl text-gray-700 dark:text-gray-100">MinierQR</h1>
         </div>
 
         <!-- GitHub link -->
@@ -251,12 +251,19 @@ onUnmounted(() => {
           class="relative flex flex-col gap-2 text-sm text-zinc-600 dark:text-zinc-400 md:hidden"
         >
           <div class="flex items-center justify-center gap-1">
-            <span>{{ t('Created by') }}</span>
+            <span>{{ t('Forked from') }}</span>
             <a
               href="https://github.com/lyqht"
               target="_blank"
               class="text-zinc-900 hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-300"
               >Estee Tey 🐧🌻</a
+            >
+            <span>{{ t('Modified by') }}</span>
+            <a
+              href="https://github.com/skylarshaffer"
+              target="_blank"
+              class="text-zinc-900 hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-300"
+              >Skylar Shaffer</a
             >
           </div>
         </div>

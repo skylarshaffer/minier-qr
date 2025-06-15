@@ -59,12 +59,20 @@ onMounted(() => {
     class="fixed inset-x-0 bottom-0 hidden p-4 text-sm text-zinc-600 dark:text-zinc-400 md:flex md:justify-center"
   >
     <div class="flex items-center gap-2">
-      <span>{{ t('Created by') }}</span>
+      <span>{{ t('Forked from') }}</span>
       <a
         href="https://github.com/lyqht"
         target="_blank"
         class="text-zinc-900 hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-300"
         >Estee Tey 🐧🌻</a
+      >
+      <span>|</span>
+      <span>{{ t('Modified by') }}</span>
+      <a
+        href="https://github.com/skylarshaffer"
+        target="_blank"
+        class="text-zinc-900 hover:text-zinc-700 dark:text-zinc-100 dark:hover:text-zinc-300"
+        >Skylar Shaffer</a
       >
       <span>|</span>
       <Dialog>

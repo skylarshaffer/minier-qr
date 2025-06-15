@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import LanguageSelector from '@/components/LanguageSelector.vue'
 import MobileMenu from '@/components/MobileMenu.vue'
-import QRCodeScan from '@/components/QRCodeScan.vue'
 import QRCodeCreate from '@/components/QRCodeCreate.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import useDarkModePreference from '@/utils/useDarkModePreference'
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -13,7 +12,6 @@ const { isDarkMode, isDarkModePreferenceSetBySystem, toggleDarkModePreference } 
   useDarkModePreference()
 
 const capturedData = ref<string>('')
-const qrCodeScanRef = ref<InstanceType<typeof QRCodeScan> | null>(null)
 
 // #region Scroll-aware header
 const lastScrollTop = ref(0)
@@ -45,34 +43,6 @@ onUnmounted(() => {
 })
 // #endregion
 
-// #region App mode
-enum AppMode {
-  Create = 'create',
-  Scan = 'scan'
-}
-
-const appMode = ref<AppMode>(AppMode.Create)
-const setAppMode = (mode: AppMode) => {
-  if (
-    appMode.value === AppMode.Scan &&
-    mode === AppMode.Create &&
-    qrCodeScanRef.value?.capturedData
-  ) {
-    capturedData.value = qrCodeScanRef.value.capturedData
-  }
-
-  appMode.value = mode
-}
-
-const useCapturedDataInCreateMode = (data: string) => {
-  capturedData.value = data
-  appMode.value = AppMode.Create
-}
-
-const isModeToggleDisabled = computed(() => {
-  return appMode.value === AppMode.Scan && !!qrCodeScanRef.value && !!qrCodeScanRef.value.isLoading
-})
-// #endregion
 </script>
 
 <template>
@@ -82,51 +52,7 @@ const isModeToggleDisabled = computed(() => {
       class="hidden md:mx-auto md:mb-4 md:mt-8 md:flex md:w-5/6 md:flex-row md:justify-between md:ps-4"
     >
       <div class="flex items-center">
-        <h1 class="text-3xl text-gray-700 dark:text-gray-100">MiniQR</h1>
-
-        <!-- Mode toggle button - only visible on desktop -->
-        <div
-          class="ml-4 flex items-center gap-1 rounded-lg border border-zinc-300 bg-zinc-100 p-1 dark:border-zinc-700 dark:bg-zinc-800"
-        >
-          <button
-            :class="[
-              'flex items-center gap-1 rounded-md px-2 py-1 text-sm outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-700 dark:focus-visible:ring-zinc-200 md:gap-2 md:px-3 md:py-1.5 md:text-base',
-              appMode === AppMode.Create
-                ? 'bg-white text-zinc-900 shadow dark:bg-zinc-700 dark:text-zinc-100'
-                : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'
-            ]"
-            @click="setAppMode(AppMode.Create)"
-            :disabled="isModeToggleDisabled"
-            :aria-label="t('Switch to Create Mode')"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-              <path
-                fill="currentColor"
-                d="M3 11h8V3H3zm2-6h4v4H5zM3 21h8v-8H3zm2-6h4v4H5zm8-12v8h8V3zm6 6h-4V5h4zm-6 12h8v-8h-8zm2-6h4v4h-4z"
-              />
-            </svg>
-            <span>{{ t('Create') }}</span>
-          </button>
-          <button
-            :class="[
-              'flex items-center gap-1 rounded-md px-2 py-1 text-sm outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-700 dark:focus-visible:ring-zinc-200 md:gap-2 md:px-3 md:py-1.5 md:text-base',
-              appMode === AppMode.Scan
-                ? 'bg-white text-zinc-900 shadow dark:bg-zinc-700 dark:text-zinc-100'
-                : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100'
-            ]"
-            @click="setAppMode(AppMode.Scan)"
-            :disabled="isModeToggleDisabled"
-            :aria-label="t('Switch to Scan Mode')"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-              <path
-                fill="currentColor"
-                d="M12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6m0 8a5 5 0 1 1 0-10a5 5 0 0 1 0 10m0-12a1 1 0 0 1 1 1a1 1 0 0 1-1 1a1 1 0 0 1-1-1a1 1 0 0 1 1-1m4.5 1.5a1.5 1.5 0 0 1 1.5 1.5a1.5 1.5 0 0 1-1.5 1.5a1.5 1.5 0 0 1-1.5-1.5a1.5 1.5 0 0 1 1.5-1.5M20 4h-3.17l-1.24-1.35A1.99 1.99 0 0 0 14.12 2H9.88c-.56 0-1.1.24-1.48.65L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"
-              />
-            </svg>
-            <span>{{ t('Scan') }}</span>
-          </button>
-        </div>
+        <h1 class="text-3xl text-gray-700 dark:text-gray-100">MinierQR</h1>
       </div>
 
       <div class="flex items-center justify-end gap-2">
@@ -210,57 +136,6 @@ const isModeToggleDisabled = computed(() => {
         <div
           class="relative flex items-center gap-1 rounded-lg border border-zinc-300 bg-zinc-100 p-1 shadow-lg transition-all duration-300 dark:border-zinc-700 dark:bg-zinc-800 dark:shadow-slate-800"
         >
-          <button
-            :class="[
-              'flex items-center gap-1 rounded-md px-2 py-1 text-sm outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-700 dark:focus-visible:ring-zinc-200',
-              appMode === AppMode.Create
-                ? 'bg-white text-zinc-900 shadow dark:bg-zinc-700 dark:text-zinc-100'
-                : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100',
-              isHeaderCollapsed ? 'py-0.5 text-xs' : 'py-1 text-sm'
-            ]"
-            @click="setAppMode(AppMode.Create)"
-            :disabled="isModeToggleDisabled"
-            :aria-label="t('Switch to Create Mode')"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              :width="isHeaderCollapsed ? 14 : 18"
-              :height="isHeaderCollapsed ? 14 : 18"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M3 11h8V3H3zm2-6h4v4H5zM3 21h8v-8H3zm2-6h4v4H5zm8-12v8h8V3zm6 6h-4V5h4zm-6 12h8v-8h-8zm2-6h4v4h-4z"
-              />
-            </svg>
-            <span>{{ t('Create') }}</span>
-          </button>
-          <button
-            :class="[
-              'flex items-center gap-1 rounded-md px-2 py-1 text-sm outline-none transition-colors focus-visible:ring-1 focus-visible:ring-zinc-700 dark:focus-visible:ring-zinc-200',
-              appMode === AppMode.Scan
-                ? 'bg-white text-zinc-900 shadow dark:bg-zinc-700 dark:text-zinc-100'
-                : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100',
-              isHeaderCollapsed ? 'py-0.5 text-xs' : 'py-1 text-sm'
-            ]"
-            @click="setAppMode(AppMode.Scan)"
-            :disabled="isModeToggleDisabled"
-            :aria-label="t('Switch to Scan Mode')"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              :width="isHeaderCollapsed ? 14 : 18"
-              :height="isHeaderCollapsed ? 14 : 18"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M12 9a3 3 0 1 0 0 6a3 3 0 0 0 0-6m0 8a5 5 0 1 1 0-10a5 5 0 0 1 0 10m0-12a1 1 0 0 1 1 1a1 1 0 0 1-1 1a1 1 0 0 1-1-1a1 1 0 0 1 1-1m4.5 1.5a1.5 1.5 0 0 1 1.5 1.5a1.5 1.5 0 0 1-1.5 1.5a1.5 1.5 0 0 1-1.5-1.5a1.5 1.5 0 0 1 1.5-1.5M20 4h-3.17l-1.24-1.35A1.99 1.99 0 0 0 14.12 2H9.88c-.56 0-1.1.24-1.48.65L7.17 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2"
-              />
-            </svg>
-            <span>{{ t('Scan') }}</span>
-          </button>
-
           <!-- Hamburger menu -->
           <MobileMenu
             :isDarkMode="isDarkMode"
@@ -276,11 +151,8 @@ const isModeToggleDisabled = computed(() => {
     >
       <!-- Main content area with conditional rendering based on app mode -->
       <div class="w-full lg:w-5/6">
-        <div v-if="appMode === AppMode.Create">
+        <div>
           <QRCodeCreate :initial-data="capturedData" />
-        </div>
-        <div v-else class="flex flex-col items-center justify-center py-8">
-          <QRCodeScan ref="qrCodeScanRef" @create-qr="useCapturedDataInCreateMode" />
         </div>
       </div>
     </div>
